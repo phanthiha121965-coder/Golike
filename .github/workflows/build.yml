@@ -1,28 +1,37 @@
 name: Build Android APK
 
+# Tự động chạy khi ông đẩy code lên nhánh main hoặc có thể bấm chạy thủ công
 on:
   push:
-    branches: [ main, master ]
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    runs-on: ubuntu-22.04
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+    steps:
+      - name: Lấy mã nguồn về máy chủ
+        uses: actions/checkout@v3
+
+      - name: Cài đặt Python 3.10
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        with:
-          command: buildozer -v android debug
+      - name: Cài đặt các gói hỗ trợ hệ thống & OpenCV
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python3-dev python3-pip python3-venv zip unzip libltdl-dev libffi-dev libssl-dev autoconf autotools-dev cmake
+          pip install buildozer cython virtualenv
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
+      - name: Đóng gói APK bằng Buildozer
+        run: |
+          buildozer android debug
+
+      - name: Upload file APK lên GitHub
+        uses: actions/upload-artifact@v3
         with:
-          name: package
+          name: GolikeMaster-APK
           path: bin/*.apk
