@@ -1,24 +1,42 @@
 [app]
+
 # Tên ứng dụng hiển thị trên điện thoại
 title = Golike Master Pro
+
 # Tên gói ứng dụng (không chứa ký tự đặc biệt)
 package.name = golikemaster
+
 # Domain của ông
 package.domain = org.dung
+
 # Thư mục chứa mã nguồn (dấu . nghĩa là thư mục hiện tại)
 source.dir = .
+
 # Các loại file sẽ được đóng gói vào APK
 source.include_exts = py,png,jpg,kv,atlas
+
 # Phiên bản
 version = 1.0
-# Các thư viện Python cần thiết (Dùng opencv-python-headless để không bị lỗi GUI trên Android)
+
+# Các thư viện Python cần thiết
 requirements = python3,kivy,numpy,opencv-python-headless
+
 # Hướng màn hình dọc
 orientation = portrait
+
 # Full màn hình
 fullscreen = 0
+
 # Cấp quyền cho ứng dụng
 android.permissions = INTERNET, SYSTEM_ALERT_WINDOW, BIND_ACCESSIBILITY_SERVICE
+
+# Cấu hình phiên bản Android SDK và NDK để Buildozer tự tải đúng bộ công cụ build-tools & aidl
+android.api = 31
+android.minapi = 21
+android.sdk = 30
+android.ndk = 25b
+android.accept_sdk_license = True
+
 # Kiến trúc chip Android hỗ trợ
 android.archs = arm64-v8a, armeabi-v7a
 android.allow_backup = True
